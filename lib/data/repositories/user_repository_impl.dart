@@ -12,17 +12,13 @@ class UserRepositoryImpl implements UserRepository {
   Future<List<User>> getUsers() async {
     try {
       final usersJson = await remoteDataSource.fetchUsers();
-      // Imprime cada usuario para inspeccionar el contenido
-      for (var json in usersJson) {
-        print('Usuario JSON: $json');
-      }
 
       final users = usersJson.map((json) {
         try {
           final userModel = UserModel.fromJson(json);
           return userModel;
         } catch (e) {
-          print('Error al parsear un usuario: $e');
+          print('Error al parsear un usuario: \$e');
           rethrow;
         }
       }).toList();
@@ -36,7 +32,7 @@ class UserRepositoryImpl implements UserRepository {
         );
       }).toList();
     } catch (e) {
-      print('Error al obtener usuarios: $e');
+      print('Error al obtener usuarios: \$e');
       return [];
     }
   }
@@ -55,16 +51,43 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<void> createUser(User user) async {
-    // Mapea la entidad a UserModel y llama al endpoint de creación
+    final nameParts = user.name.split(' ');
+    final userModel = UserModel(
+      id: user.id,
+      email: user.email,
+      username: user.email.split('@').first,
+      password: 'default123',
+      name: NameModel(
+        firstname: nameParts.first,
+        lastname: nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '',
+      ),
+      phone: user.phone,
+    );
+    await remoteDataSource.createUser(userModel);
   }
 
   @override
   Future<void> updateUser(User user) async {
-    // Lógica para actualizar
+    final nameParts = user.name.split(' ');
+    final userModel = UserModel(
+      id: user.id,
+      email: user.email,
+      username: user.email.split('@').first,
+      password: 'default123',
+      name: NameModel(
+        firstname: nameParts.first,
+        lastname: nameParts.length > 1 ? nameParts.sublist(1).join(' ') : '',
+      ),
+      phone: user.phone,
+    );
+
+    await remoteDataSource.updateUserFromEntity(userModel);
+    print('[REPO] Usuario actualizado: ${userModel.toJson()}');
   }
 
   @override
   Future<void> deleteUser(int id) async {
-    // Lógica para eliminar
+    await remoteDataSource.deleteUser(id);
+    print('[REPO] Usuario eliminado: ID $id');
   }
 }
