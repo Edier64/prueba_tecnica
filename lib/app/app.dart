@@ -15,6 +15,8 @@ import 'package:prueba_tecnica/services/products_service.dart';
 import 'package:prueba_tecnica/ui/views/cart_list/cart_list_view.dart';
 import 'package:prueba_tecnica/services/carts_service.dart';
 import 'package:prueba_tecnica/ui/views/user_edit/user_edit_view.dart';
+import 'package:prueba_tecnica/ui/views/product_create/product_create_view.dart';
+import 'package:prueba_tecnica/ui/views/product_edit/product_edit_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -27,6 +29,8 @@ import 'package:prueba_tecnica/ui/views/user_edit/user_edit_view.dart';
     MaterialRoute(page: ProductListView),
     MaterialRoute(page: CartListView),
     MaterialRoute(page: UserEditView),
+    MaterialRoute(page: ProductCreateView),
+    MaterialRoute(page: ProductEditView),
 // @stacked-route
   ],
   dependencies: [

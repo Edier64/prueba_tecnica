@@ -16,22 +16,37 @@ class ProductListView extends StackedView<ProductListViewModel> {
       child: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // Espacio superior
             const SizedBox(height: 60),
-            Text(
-              "Gestión de Productos",
-              style: Theme.of(context).textTheme.headlineMedium,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Gestión de Productos",
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                ElevatedButton(
+                  onPressed: viewModel.createProduct,
+                  child: const Text("Nuevo Producto"),
+                ),
+              ],
             ),
-            const SizedBox(height: 20),
-            if (viewModel.isBusy)
-              const CircularProgressIndicator()
-            else if (viewModel.products.isEmpty) ...[
+            const SizedBox(height: 24),
+
+            // Estado de carga / lista vacía / lista de productos
+            if (viewModel.isBusy) ...[
+              const Center(child: CircularProgressIndicator()),
+            ] else if (viewModel.products.isEmpty) ...[
               const Text("No hay productos disponibles"),
+              const SizedBox(height: 12),
               ElevatedButton(
                 onPressed: viewModel.fetchProducts,
                 child: const Text("Cargar Productos"),
-              )
-            ] else
+              ),
+            ] else ...[
+              // Expandimos la lista para que ocupe el espacio restante
               Expanded(
                 child: ListView.builder(
                   itemCount: viewModel.products.length,
@@ -40,7 +55,7 @@ class ProductListView extends StackedView<ProductListViewModel> {
                     return Card(
                       margin: const EdgeInsets.symmetric(
                         vertical: 8.0,
-                        horizontal: 12.0,
+                        horizontal: 0,
                       ),
                       child: ListTile(
                         leading: Image.network(
@@ -50,14 +65,35 @@ class ProductListView extends StackedView<ProductListViewModel> {
                           fit: BoxFit.contain,
                         ),
                         title: Text(product.title),
-                        subtitle:
-                            Text("USD \$${product.price.toStringAsFixed(2)}"),
+                        subtitle: Text(
+                          "USD \$${product.price.toStringAsFixed(2)}",
+                        ),
                         onTap: () => viewModel.showProductDetail(product.id),
+                        trailing: Wrap(
+                          spacing: 8,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.remove_red_eye),
+                              onPressed: () =>
+                                  viewModel.showProductDetail(product.id),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () =>
+                                  viewModel.editProduct(product.id),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () => viewModel.deleteUser(product.id),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
                 ),
               ),
+            ],
           ],
         ),
       ),

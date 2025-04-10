@@ -17,7 +17,22 @@ class UserCreateViewModel extends BaseViewModel {
 
   Future<void> saveUser() async {
     if (!formKey.currentState!.validate()) return;
-
+    if (!emailController.text.trim().contains('@') ||
+        !emailController.text.trim().contains('.')) {
+      return showDialog(
+        context: _navigationService.navigatorKey!.currentContext!,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: const Text('El email no es válido'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
+    }
     setBusy(true);
     try {
       final user = User(

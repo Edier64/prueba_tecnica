@@ -5,10 +5,14 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i10;
+import 'package:flutter/material.dart' as _i12;
 import 'package:flutter/material.dart';
 import 'package:prueba_tecnica/ui/views/cart_list/cart_list_view.dart' as _i8;
 import 'package:prueba_tecnica/ui/views/home/home_view.dart' as _i2;
+import 'package:prueba_tecnica/ui/views/product_create/product_create_view.dart'
+    as _i10;
+import 'package:prueba_tecnica/ui/views/product_edit/product_edit_view.dart'
+    as _i11;
 import 'package:prueba_tecnica/ui/views/product_list/product_list_view.dart'
     as _i7;
 import 'package:prueba_tecnica/ui/views/startup/startup_view.dart' as _i3;
@@ -19,7 +23,7 @@ import 'package:prueba_tecnica/ui/views/user_detail/user_detail_view.dart'
 import 'package:prueba_tecnica/ui/views/user_edit/user_edit_view.dart' as _i9;
 import 'package:prueba_tecnica/ui/views/user_list/user_list_view.dart' as _i4;
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i11;
+import 'package:stacked_services/stacked_services.dart' as _i13;
 
 class Routes {
   static const homeView = '/home-view';
@@ -38,6 +42,10 @@ class Routes {
 
   static const userEditView = '/user-edit-view';
 
+  static const productCreateView = '/product-create-view';
+
+  static const productEditView = '/product-edit-view';
+
   static const all = <String>{
     homeView,
     startupView,
@@ -47,6 +55,8 @@ class Routes {
     productListView,
     cartListView,
     userEditView,
+    productCreateView,
+    productEditView,
   };
 }
 
@@ -84,56 +94,76 @@ class StackedRouter extends _i1.RouterBase {
       Routes.userEditView,
       page: _i9.UserEditView,
     ),
+    _i1.RouteDef(
+      Routes.productCreateView,
+      page: _i10.ProductCreateView,
+    ),
+    _i1.RouteDef(
+      Routes.productEditView,
+      page: _i11.ProductEditView,
+    ),
   ];
 
   final _pagesMap = <Type, _i1.StackedRouteFactory>{
     _i2.HomeView: (data) {
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i12.MaterialPageRoute<dynamic>(
         builder: (context) => const _i2.HomeView(),
         settings: data,
       );
     },
     _i3.StartupView: (data) {
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i12.MaterialPageRoute<dynamic>(
         builder: (context) => const _i3.StartupView(),
         settings: data,
       );
     },
     _i4.UserListView: (data) {
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i12.MaterialPageRoute<dynamic>(
         builder: (context) => const _i4.UserListView(),
         settings: data,
       );
     },
     _i5.UserDetailView: (data) {
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i12.MaterialPageRoute<dynamic>(
         builder: (context) => const _i5.UserDetailView(),
         settings: data,
       );
     },
     _i6.UserCreateView: (data) {
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i12.MaterialPageRoute<dynamic>(
         builder: (context) => const _i6.UserCreateView(),
         settings: data,
       );
     },
     _i7.ProductListView: (data) {
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i12.MaterialPageRoute<dynamic>(
         builder: (context) => const _i7.ProductListView(),
         settings: data,
       );
     },
     _i8.CartListView: (data) {
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i12.MaterialPageRoute<dynamic>(
         builder: (context) => const _i8.CartListView(),
         settings: data,
       );
     },
     _i9.UserEditView: (data) {
       final args = data.getArgs<UserEditViewArguments>(nullOk: false);
-      return _i10.MaterialPageRoute<dynamic>(
+      return _i12.MaterialPageRoute<dynamic>(
         builder: (context) =>
             _i9.UserEditView(key: args.key, userId: args.userId),
+        settings: data,
+      );
+    },
+    _i10.ProductCreateView: (data) {
+      return _i12.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i10.ProductCreateView(),
+        settings: data,
+      );
+    },
+    _i11.ProductEditView: (data) {
+      return _i12.MaterialPageRoute<dynamic>(
+        builder: (context) => const _i11.ProductEditView(),
         settings: data,
       );
     },
@@ -152,7 +182,7 @@ class UserEditViewArguments {
     required this.userId,
   });
 
-  final _i10.Key? key;
+  final _i12.Key? key;
 
   final int userId;
 
@@ -173,7 +203,7 @@ class UserEditViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i11.NavigationService {
+extension NavigatorStateExtension on _i13.NavigationService {
   Future<dynamic> navigateToHomeView([
     int? routerId,
     bool preventDuplicates = true,
@@ -273,7 +303,7 @@ extension NavigatorStateExtension on _i11.NavigationService {
   }
 
   Future<dynamic> navigateToUserEditView({
-    _i10.Key? key,
+    _i12.Key? key,
     required int userId,
     int? routerId,
     bool preventDuplicates = true,
@@ -283,6 +313,34 @@ extension NavigatorStateExtension on _i11.NavigationService {
   }) async {
     return navigateTo<dynamic>(Routes.userEditView,
         arguments: UserEditViewArguments(key: key, userId: userId),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToProductCreateView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.productCreateView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> navigateToProductEditView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return navigateTo<dynamic>(Routes.productEditView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -388,7 +446,7 @@ extension NavigatorStateExtension on _i11.NavigationService {
   }
 
   Future<dynamic> replaceWithUserEditView({
-    _i10.Key? key,
+    _i12.Key? key,
     required int userId,
     int? routerId,
     bool preventDuplicates = true,
@@ -398,6 +456,34 @@ extension NavigatorStateExtension on _i11.NavigationService {
   }) async {
     return replaceWith<dynamic>(Routes.userEditView,
         arguments: UserEditViewArguments(key: key, userId: userId),
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithProductCreateView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.productCreateView,
+        id: routerId,
+        preventDuplicates: preventDuplicates,
+        parameters: parameters,
+        transition: transition);
+  }
+
+  Future<dynamic> replaceWithProductEditView([
+    int? routerId,
+    bool preventDuplicates = true,
+    Map<String, String>? parameters,
+    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
+        transition,
+  ]) async {
+    return replaceWith<dynamic>(Routes.productEditView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
